@@ -1,7 +1,8 @@
-import 'package:e_commerce/ui/shared/utils.dart';
 import 'package:e_commerce/ui/views/splash_view/splash_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../shared/utlis.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});

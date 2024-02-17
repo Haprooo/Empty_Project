@@ -1,14 +1,15 @@
 import 'dart:convert';
 
 import 'package:bot_toast/bot_toast.dart';
-import 'package:e_commerce/core/enums/request_type.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 import 'package:http_parser/http_parser.dart';
 
+import '../enums/request_type.dart';
+
 class NetworkUtil {
   static String baseUrl = 'fakestoreapi.com';
-
+// fakestoreapi.com
   static Future<dynamic> sendRequest({
     required RequestType type,
     required String route,
@@ -46,7 +47,7 @@ class NetworkUtil {
     } catch (e) {}
 
     jsonResponse.putIfAbsent(
-        'response', () => result == null ? {'message': decodedBody} : result);
+        'response', () => result ?? {'message': decodedBody});
 
     jsonResponse.putIfAbsent('statusCode', () => response.statusCode);
     return jsonResponse;
@@ -66,7 +67,7 @@ class NetworkUtil {
           type.toString(), Uri.https(baseUrl, route, params));
 
       var _filesKeyList = files!.keys.toList();
-      var _filesNameList = files.values.toList();
+      var _filesNameList = files.values.toList(); //path
 
       for (int i = 0; i < _filesNameList.length; i++) {
         if (_filesNameList[i].isNotEmpty) {

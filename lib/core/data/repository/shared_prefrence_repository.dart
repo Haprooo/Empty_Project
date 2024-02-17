@@ -1,22 +1,51 @@
 import 'dart:convert';
-
-import 'package:e_commerce/core/data/models/login_info.dart';
-import 'package:e_commerce/core/data/models/token_info.dart';
-import 'package:e_commerce/main.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../enums/shared_preference_data_type.dart';
+import '../../enums/data_type.dart';
+import '../models/cart_model.dart';
+import '../models/token_info.dart';
 
 class SharedPrefrenceRepository {
-  SharedPreferences pref = prefs;
+  SharedPreferences pref = Get.find<SharedPreferences>();
 
   //!---- Keys  ------
 
   String PREF_FIRST_LUNCH = 'first_lunch';
-  String PREF_LOGGEDIN = 'logged_in';
-  String PREF_LOGININFO = 'logininfo';
-  String PREF_TOKENINFO = 'TOKENINFO';
+  String PREF_IS_LOGED = 'loged_in';
+  String PREF_LOGIN_INFO = 'login_info';
+  String PREF_TOKEN_INFO = 'token_info';
   String PREF_APP_LANG = 'app_language';
+  String PREF_CART_LIST = 'cart_list';
+
+  void setLoginInfo(List<String> valeu) {
+    setPrefrenc(type: DataType.LISTSTRING, key: PREF_LOGIN_INFO, value: valeu);
+  }
+
+  List<String> getLoginInfo() {
+    if (pref.containsKey(PREF_LOGIN_INFO)) {
+      List<Object?> result = getPrefrence(PREF_LOGIN_INFO);
+
+      List<String> info = [];
+
+      result.forEach((element) {
+        info.add(element.toString());
+      });
+      return info;
+    } else
+      return [];
+  }
+
+  void setLogedIn(bool value) {
+    setPrefrenc(type: DataType.BOOL, key: PREF_IS_LOGED, value: value);
+  }
+
+  bool getLogedIn() {
+    if (pref.containsKey(PREF_IS_LOGED))
+      return getPrefrence(PREF_IS_LOGED);
+    else
+      return false;
+  }
 
   void setFirstLunch(bool value) {
     setPrefrenc(type: DataType.BOOL, key: PREF_FIRST_LUNCH, value: value);
@@ -28,52 +57,22 @@ class SharedPrefrenceRepository {
     else
       return true;
   }
-//-----------------------------------------------------------------
 
-  void setLoggedIn(bool value) {
-    setPrefrenc(type: DataType.BOOL, key: PREF_LOGGEDIN, value: value);
-  }
-
-  bool getLoggedIn() {
-    if (pref.containsKey(PREF_LOGGEDIN))
-      return getPrefrence(PREF_LOGGEDIN);
-    else
-      return false;
-  }
-
-  //----------------------------------------------------------------
-
-  void setlogininfo(LoginInfo value) {
+  void setTokenInfo(TokenInfo token) {
+    //! Map<String, dynamic> map = token.toJson();
+    //! String strToken = jsonEncode(map);
+    //! jsonEncode (get object return string)
     setPrefrenc(
         type: DataType.STRING,
-        key: PREF_LOGININFO,
-        value: jsonEncode(value.toJson()));
+        key: PREF_TOKEN_INFO,
+        value: jsonEncode(token.toJson()));
   }
 
-  LoginInfo getlogininfo() {
-    if (pref.containsKey(PREF_LOGININFO)) {
-      return LoginInfo.fromJson(jsonDecode(getPrefrence(PREF_LOGININFO)));
-    } else
-      return LoginInfo(isCheked: false);
+  TokenInfo getTokenInfo() {
+    //! String strToken = getPrefrence(PREF_TOKEN_INFO);
+    //! Map<String, dynamic> map = jsonDecode(strToken);
+    return TokenInfo.fromJson(jsonDecode(getPrefrence(PREF_TOKEN_INFO)));
   }
-
-  //----------------------------------------------------------------
-
-  void settokeninfo(TokenInfo value) {
-    setPrefrenc(
-        type: DataType.STRING,
-        key: PREF_TOKENINFO,
-        value: jsonEncode(value.toJson()));
-  }
-
-  TokenInfo gettokeninfo() {
-    if (pref.containsKey(PREF_TOKENINFO)) {
-      return TokenInfo.fromJson(jsonDecode(getPrefrence(PREF_TOKENINFO)));
-    } else
-      return TokenInfo();
-  }
-
-  //----------------------------------------------------------------
 
   void setAppLanguage(String code) {
     setPrefrenc(type: DataType.STRING, key: PREF_APP_LANG, value: code);
@@ -83,8 +82,22 @@ class SharedPrefrenceRepository {
     if (pref.containsKey(PREF_APP_LANG)) {
       return getPrefrence(PREF_APP_LANG);
     } else {
-      return 'en';
+      return 'ar';
     }
+  }
+
+  void setCartList(List<CartModel> list) {
+    setPrefrenc(
+        type: DataType.STRING,
+        key: PREF_CART_LIST,
+        value: CartModel.encode(list));
+  }
+
+  List<CartModel> getCartList() {
+    if (pref.containsKey(PREF_CART_LIST))
+      return CartModel.decode(getPrefrence(PREF_CART_LIST));
+    else
+      return [];
   }
 
   //*====================================

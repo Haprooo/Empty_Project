@@ -46,6 +46,13 @@ dependencies:
   connectivity_plus: ^5.0.2
   provider: ^6.1.1
   carousel_slider: ^4.2.1
+  url_launcher: ^6.1.14
+  youtube: ^1.0.1
+  location: ^5.0.0
+  geocoding: ^2.1.0
+  google_maps_flutter: ^2.3.0
+  firebase_core: ^2.13.0
+  firebase_messaging: ^14.6.1
 
 dev_dependencies:
   flutter_test:

@@ -5,10 +5,10 @@ class CommonResponse<T> {
 
   CommonResponse.fromJson(dynamic json) {
     this.statusCode = json['statusCode'];
-    if (statusCode.toString().startsWith('2')) {
+    if (getStatus) {
       this.data = json['response'];
     } else {
-      if (json['response'] != null && json['response'] is Map) {
+      if (json['response']['message'].toString().isNotEmpty) {
         message = json['response']['message'];
       } else {
         switch (statusCode) {
@@ -40,6 +40,9 @@ class CommonResponse<T> {
       }
     }
   }
+// bool getStatus() {
+  //   return statusCode.toString().startsWith('2');
+  // }
 
   bool get getStatus => statusCode.toString().startsWith('2');
 }
